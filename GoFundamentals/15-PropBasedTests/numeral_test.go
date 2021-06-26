@@ -28,6 +28,17 @@ func TestRomanNumerals(t *testing.T) {
 		{Arabic: 47, Roman: "XLVII"},
 		{Arabic: 49, Roman: "XLIX"},
 		{Arabic: 50, Roman: "L"},
+		{Arabic: 100, Roman: "C"},
+		{Arabic: 90, Roman: "XC"},
+		{Arabic: 400, Roman: "CD"},
+		{Arabic: 500, Roman: "D"},
+		{Arabic: 900, Roman: "CM"},
+		{Arabic: 1000, Roman: "M"},
+		{Arabic: 1984, Roman: "MCMLXXXIV"},
+		{Arabic: 3999, Roman: "MMMCMXCIX"},
+		{Arabic: 2014, Roman: "MMXIV"},
+		{Arabic: 1006, Roman: "MVI"},
+		{Arabic: 798, Roman: "DCCXCVIII"},
 	}
 
 	for _, test := range cases {
