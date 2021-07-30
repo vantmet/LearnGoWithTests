@@ -1,3 +1,3 @@
-module anferny.me.uk/learn
+module github.com/vantmet/LearnGoWithTests
 
 go 1.16
