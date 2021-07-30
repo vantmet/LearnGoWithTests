@@ -1,28 +1,30 @@
-package poker
+package poker_test
 
 import (
 	"strings"
 	"testing"
+
+	poker "github.com/vantmet/LearnGoWithTests/http-server"
 )
 
 func TestCLI(t *testing.T) {
-	playerStore := &StubPlayerStore{}
-	input := strings.NewReader("Chris Wins\n")
+	t.Run("record chris win from user input", func(t *testing.T) {
+		playerStore := &poker.StubPlayerStore{}
+		input := strings.NewReader("Chris wins\n")
 
-	cli := &CLI{playerStore, input}
-	cli.PlayPoker()
+		cli := poker.NewCLI(playerStore, input)
+		cli.PlayPoker()
 
-	assertPlayerWin(t, playerStore, "Chris")
-}
+		poker.AssertPlayerWin(t, playerStore, "Chris")
+	})
+	t.Run("record cleo win from user input", func(t *testing.T) {
+		playerStore := &poker.StubPlayerStore{}
+		input := strings.NewReader("Cleo wins\n")
 
-func assertPlayerWin(t testing.TB, store *StubPlayerStore, winner string) {
-	t.Helper()
+		cli := poker.NewCLI(playerStore, input)
+		cli.PlayPoker()
 
-	if len(store.winCalls) != 1 {
-		t.Fatal("expected a win call but didn't get any")
-	}
+		poker.AssertPlayerWin(t, playerStore, "Cleo")
+	})
 
-	if store.winCalls[0] != winner {
-		t.Errorf("didn't record correct winner, got %q, want %q", store.winCalls[0], winner)
-	}
 }
