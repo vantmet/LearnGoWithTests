@@ -11,9 +11,7 @@ import (
 )
 
 var dummySpyAlerter = &SpyBlindAlerter{}
-var dummyBlindAlerter = &SpyBlindAlerter{}
 var dummyPlayerStore = &poker.StubPlayerStore{}
-var dummyStdIn = &bytes.Buffer{}
 var dummyStdOut = &bytes.Buffer{}
 
 type scheduledAlert struct {
