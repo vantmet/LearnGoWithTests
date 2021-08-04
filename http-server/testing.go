@@ -81,23 +81,23 @@ func AssertStatus(t testing.TB, got, want int) {
 }
 
 type ScheduledAlert struct {
-	at     time.Duration
-	amount int
+	At     time.Duration
+	Amount int
 }
 
 func (s ScheduledAlert) String() string {
-	return fmt.Sprintf("%d chips at %v", s.amount, s.at)
+	return fmt.Sprintf("%d chips at %v", s.Amount, s.At)
 }
 
 func AssertScheduledAlert(t testing.TB, got ScheduledAlert, want ScheduledAlert) {
-	amountGot := got.amount
-	amountWant := want.amount
+	amountGot := got.Amount
+	amountWant := want.Amount
 	if amountGot != amountWant {
 		t.Errorf("got amount %d, want %d", amountGot, amountWant)
 	}
 
-	gotScheduledTime := got.at
-	wantScheduledTime := want.at
+	gotScheduledTime := got.At
+	wantScheduledTime := want.At
 	if gotScheduledTime != wantScheduledTime {
 		t.Errorf("got scheduled time of %v, want %v", gotScheduledTime, wantScheduledTime)
 	}
