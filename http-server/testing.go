@@ -2,6 +2,7 @@ package poker
 
 import (
 	"fmt"
+	"io"
 	"net/http/httptest"
 	"reflect"
 	"testing"
@@ -73,8 +74,9 @@ func AssertResponseBody(t testing.TB, got, want string) {
 }
 
 //Assert helper for Status
-func AssertStatus(t testing.TB, got, want int) {
+func AssertStatus(t testing.TB, response *httptest.ResponseRecorder, want int) {
 	t.Helper()
+	got := response.Code
 	if got != want {
 		t.Errorf("did not get correct status, got %d, want %d", got, want)
 	}
@@ -83,6 +85,7 @@ func AssertStatus(t testing.TB, got, want int) {
 type ScheduledAlert struct {
 	At     time.Duration
 	Amount int
+	To     io.Writer
 }
 
 func (s ScheduledAlert) String() string {

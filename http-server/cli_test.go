@@ -3,6 +3,7 @@ package poker_test
 import (
 	"bytes"
 	"io"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -17,8 +18,8 @@ type SpyBlindAlerter struct {
 	alerts []poker.ScheduledAlert
 }
 
-func (s *SpyBlindAlerter) ScheduleAlertAt(at time.Duration, amount int) {
-	s.alerts = append(s.alerts, poker.ScheduledAlert{at, amount})
+func (s *SpyBlindAlerter) ScheduleAlertAt(at time.Duration, amount int, to io.Writer) {
+	s.alerts = append(s.alerts, poker.ScheduledAlert{at, amount, os.Stdout})
 }
 
 type GameSpy struct {
@@ -27,7 +28,7 @@ type GameSpy struct {
 	StartCalled  bool
 }
 
-func (g *GameSpy) Start(numberOfPlayers int) {
+func (g *GameSpy) Start(numberOfPlayers int, alertsDestination io.Writer) {
 	g.StartedWith = numberOfPlayers
 	g.StartCalled = true
 }
