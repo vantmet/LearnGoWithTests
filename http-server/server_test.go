@@ -164,7 +164,6 @@ func TestGame(t *testing.T) {
 		writeWSMessage(t, ws, "3")
 		writeWSMessage(t, ws, winner)
 
-		time.Sleep(mytimer)
 		assertGameStarted(t, game, 3)
 		assertFinishCalledWith(t, game, winner)
 
@@ -229,13 +228,37 @@ func newGameRequest() *http.Request {
 }
 
 func assertGameStarted(t testing.TB, game *GameSpy, numberOfPlayers int) {
-	if game.StartedWith != numberOfPlayers {
+	t.Helper()
+	retryTimer := 500 * time.Millisecond
+
+	passed := retryUntil(retryTimer, func() bool {
+		return game.StartedWith == numberOfPlayers
+	})
+
+	if !passed {
 		t.Errorf("wanted a Start called with '%d', but got '%d'", numberOfPlayers, game.StartedWith)
 	}
 }
 
 func assertFinishCalledWith(t testing.TB, game *GameSpy, winner string) {
-	if game.FinishedWith != winner {
+	t.Helper()
+	retryTimer := 500 * time.Millisecond
+
+	passed := retryUntil(retryTimer, func() bool {
+		return game.FinishedWith == winner
+	})
+
+	if !passed {
 		t.Errorf("wanted a Finish called with '%s', but got '%s'", winner, game.FinishedWith)
 	}
+}
+
+func retryUntil(d time.Duration, f func() bool) bool {
+	deadline := time.Now().Add(d)
+	for time.Now().Before(deadline) {
+		if f() {
+			return true
+		}
+	}
+	return false
 }
