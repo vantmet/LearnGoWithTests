@@ -105,3 +105,18 @@ func AssertScheduledAlert(t testing.TB, got ScheduledAlert, want ScheduledAlert)
 		t.Errorf("got scheduled time of %v, want %v", gotScheduledTime, wantScheduledTime)
 	}
 }
+
+type GameSpy struct {
+	StartedWith  int
+	FinishedWith string
+	StartCalled  bool
+}
+
+func (g *GameSpy) Start(numberOfPlayers int, alertsDestination io.Writer) {
+	g.StartedWith = numberOfPlayers
+	g.StartCalled = true
+}
+
+func (g *GameSpy) Finish(winner string) {
+	g.FinishedWith = winner
+}

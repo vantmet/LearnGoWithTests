@@ -13,21 +13,6 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-type GameSpy struct {
-	StartedWith  int
-	FinishedWith string
-	StartCalled  bool
-}
-
-func (g *GameSpy) Start(numberOfPlayers int, alertsDestination io.Writer) {
-	g.StartedWith = numberOfPlayers
-	g.StartCalled = true
-}
-
-func (g *GameSpy) Finish(winner string) {
-	g.FinishedWith = winner
-}
-
 var dummyGame = &GameSpy{}
 var dummyPlayerStore = &StubPlayerStore{}
 
