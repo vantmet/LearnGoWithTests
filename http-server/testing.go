@@ -1,9 +1,11 @@
 package poker
 
 import (
+	"fmt"
 	"net/http/httptest"
 	"reflect"
 	"testing"
+	"time"
 )
 
 type StubPlayerStore struct {
@@ -75,5 +77,28 @@ func AssertStatus(t testing.TB, got, want int) {
 	t.Helper()
 	if got != want {
 		t.Errorf("did not get correct status, got %d, want %d", got, want)
+	}
+}
+
+type ScheduledAlert struct {
+	At     time.Duration
+	Amount int
+}
+
+func (s ScheduledAlert) String() string {
+	return fmt.Sprintf("%d chips at %v", s.Amount, s.At)
+}
+
+func AssertScheduledAlert(t testing.TB, got ScheduledAlert, want ScheduledAlert) {
+	amountGot := got.Amount
+	amountWant := want.Amount
+	if amountGot != amountWant {
+		t.Errorf("got amount %d, want %d", amountGot, amountWant)
+	}
+
+	gotScheduledTime := got.At
+	wantScheduledTime := want.At
+	if gotScheduledTime != wantScheduledTime {
+		t.Errorf("got scheduled time of %v, want %v", gotScheduledTime, wantScheduledTime)
 	}
 }

@@ -21,6 +21,7 @@ func main() {
 	fmt.Println("Let's play poker!")
 	fmt.Println("Type {name} wins to record a win")
 
-	game := poker.NewCLI(store, os.Stdin)
-	game.PlayPoker()
+	game := poker.NewGame(poker.BlindAlerterFunc(poker.StdOutAlerter), store)
+
+	poker.NewCLI(os.Stdin, os.Stdout, game).PlayPoker()
 }
