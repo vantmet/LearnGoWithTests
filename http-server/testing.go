@@ -2,6 +2,7 @@ package poker
 
 import (
 	"fmt"
+	"io"
 	"net/http/httptest"
 	"reflect"
 	"testing"
@@ -73,8 +74,9 @@ func AssertResponseBody(t testing.TB, got, want string) {
 }
 
 //Assert helper for Status
-func AssertStatus(t testing.TB, got, want int) {
+func AssertStatus(t testing.TB, response *httptest.ResponseRecorder, want int) {
 	t.Helper()
+	got := response.Code
 	if got != want {
 		t.Errorf("did not get correct status, got %d, want %d", got, want)
 	}
@@ -83,6 +85,7 @@ func AssertStatus(t testing.TB, got, want int) {
 type ScheduledAlert struct {
 	At     time.Duration
 	Amount int
+	To     io.Writer
 }
 
 func (s ScheduledAlert) String() string {
@@ -101,4 +104,24 @@ func AssertScheduledAlert(t testing.TB, got ScheduledAlert, want ScheduledAlert)
 	if gotScheduledTime != wantScheduledTime {
 		t.Errorf("got scheduled time of %v, want %v", gotScheduledTime, wantScheduledTime)
 	}
+}
+
+type GameSpy struct {
+	StartCalled bool
+	StartedWith int
+	BlindAlert  []byte
+
+	FinishedCalled bool
+	FinishedWith   string
+}
+
+func (g *GameSpy) Start(numberOfPlayers int, alertsDestination io.Writer) {
+	g.StartedWith = numberOfPlayers
+	g.StartCalled = true
+	alertsDestination.Write(g.BlindAlert)
+
+}
+
+func (g *GameSpy) Finish(winner string) {
+	g.FinishedWith = winner
 }

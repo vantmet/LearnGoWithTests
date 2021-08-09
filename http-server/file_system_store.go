@@ -12,8 +12,6 @@ type FileSystemPlayerStore struct {
 	league   League
 }
 
-//TODO: https://quii.gitbook.io/learn-go-with-tests/build-an-application/io#error-handling
-
 func NewFileSystemPlayerStore(file *os.File) (*FileSystemPlayerStore, error) {
 
 	err := initialisePlayerDBFile(file)
